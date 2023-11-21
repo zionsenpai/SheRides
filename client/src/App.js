@@ -5,12 +5,14 @@ import "./App.css";
 // import Otp from "./components/auth/Otp";
 import Home from "./components/home/Home";
 import {Routes, Route} from "react-router-dom"
+import Details from "./components/auth/Details";
 export default function App(){
     return (
         <div className="main">
             <Routes>
                 <Route path="/auth" element={<Register></Register>}></Route>
                 <Route path="/" element={<Home></Home>}></Route>
+                <Route path="/details" element={<Details></Details>}></Route>
             </Routes>
             {/* <Register></Register> */}
             {/* <Phone></Phone> */}

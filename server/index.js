@@ -32,7 +32,7 @@ app.post("/auth", async (req,res)=>{
             if(!auth){
                 res.json({message:"Incorrect email or password"});
             }
-            message="Login Successful";
+            message="login";
         }
         else{
             const hashedPassword = await hashpassword(password);
@@ -40,7 +40,7 @@ app.post("/auth", async (req,res)=>{
                 email:email,
                 password:hashedPassword
             });
-            message="Account created successfully";
+            message="signup";
         }
         const token = createToken(user._id);
         res.cookie("token",token, {
@@ -54,6 +54,17 @@ app.post("/auth", async (req,res)=>{
     catch(err){
         console.log(err);
     }
+})
+
+app.post("/details", async (req,res)=>{
+    const email = req.body.email;
+    const name = req.body.name;
+    const phone = req.body.phone;
+    const user = await User.findOneAndUpdate({email},{
+        name:name,
+        phone:phone
+    })
+    res.json("details added successfully");
 })
 
 app.post("/", async (req,res)=>{

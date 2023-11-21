@@ -13,6 +13,8 @@ const userSchema = new mongoose.Schema({
     pfp:{
         type:String
     },
+    name:String,
+    phone:String,
     requestedRides:[
         {
             start:String,

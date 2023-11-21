@@ -1,39 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Background from "../background-gradient/Background";
 import axios from "axios";
 import "./Register.css"
 import { useNavigate } from "react-router-dom";
-const Register = () => {
+import {useCookies} from "react-cookie";
+
+const Details = () => {
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [cookies, removeCookie] = useCookies([]);
+    const [name, setname] = useState("");
+    const [phone, setPhone] = useState("");
     const navigate = useNavigate();
-    function onChangeEmail(e){
-        setEmail(e.target.value);
+    function onChangeName(e){
+        setname(e.target.value);
     }
-    function onChangePassword(e){
-        setPassword(e.target.value);
+    function onChangePhone(e){
+        setPhone(e.target.value);
     }
 
 
     async function handleSubmit(){
         const submitObject = {
-            email:email,
-            password:password
+            name:name,
+            phone:phone,
+            email:email
         }
         try{
-            const data = await axios.post("http://localhost:4000/auth", submitObject, {withCredentials:true});
+            const data = await axios.post("http://localhost:4000/details", submitObject, {withCredentials:true});
             console.log(data);
-            if(data.data.message==="signup"){
-                navigate("/details");
-            }
-            else{
-                navigate("/");
-            }
+            navigate("/");
         }
         catch(err){
             console.log(err);
         }
     }
+
+    useEffect(()=>{
+        const verifyCookie = async ()=>{
+            if(!cookies.token || cookies.token==='undefined'){
+                navigate("/auth");
+            }
+            const data = await axios.post("http://localhost:4000/",{},{withCredentials:true});
+            if(data.status===false){
+                removeCookie("token");
+                navigate("/auth")
+            }
+            setEmail(data.data.email);
+        }
+        verifyCookie();
+    },[cookies, navigate, removeCookie]);
+    // console.log(user);
 
     
     return (
@@ -50,18 +66,18 @@ const Register = () => {
                 <div className="register-input-box-wrapper">
 
                     <div className="input-field-name">
-                        email
+                        name
                     </div>
                     <div className="input-box-container">
-                        <input className="input-box" type="email" onChange={onChangeEmail}></input>
+                        <input className="input-box" type="text" onChange={onChangeName}></input>
                     </div>
                 </div>
                 <div className="register-input-box-wrapper">
                     <div className="input-field-name">
-                        password
+                        phone
                     </div>
                     <div className="input-box-container">
-                        <input className="input-box" type="password" onChange={onChangePassword}></input>
+                        <input className="input-box" type="number" onChange={onChangePhone}></input>
                     </div>
                 </div>
             </div>
@@ -79,4 +95,4 @@ const Register = () => {
 }
 
 
-export default Register;
+export default Details;
