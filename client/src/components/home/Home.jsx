@@ -1,10 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./home.css";
-import Background from "../background-gradient/Background";
+// import Background from "../background-gradient/Background";
 import location from "../../images/location-icon.png";
 import place from "../../images/temp-place.jpg";
 import Navbar from "../navbar/Navbar";
+
+
+import { useNavigate } from "react-router-dom";
+import {useCookies} from "react-cookie";
+import axios from "axios";
 const Home = () => {
+
+    const [user, setUser] = useState({});
+    const navigate = useNavigate();
+    const [cookies, removeCookie] = useCookies([]);
+    useEffect(()=>{
+        const verifyCookie = async ()=>{
+            if(!cookies.token || cookies.token==='undefined'){
+                navigate("/auth");
+            }
+            const data = await axios.post("http://localhost:4000/",{},{withCredentials:true});
+            if(data.status===false){
+                removeCookie("token");
+                navigate("/auth")
+            }
+            setUser({
+                email:data.data.email,
+                id:data.data.id,
+                pfp:data.data.pfp,
+                requestedRides:data.data.requestedRides,
+                givenRides:data.data.givenRides
+            })
+        }
+        verifyCookie();
+    },[cookies, navigate, removeCookie]);
+    console.log(user);
+    
     return (
         <div className="home">
 
