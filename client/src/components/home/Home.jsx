@@ -36,6 +36,15 @@ const Home = () => {
     },[cookies, navigate, removeCookie]);
     console.log(user);
     
+
+    function position(){
+        console.log("Inside");
+        navigator.geolocation.getCurrentPosition((pos)=>{
+            console.log(pos.coords);
+        })
+        // console.log(posi);
+    }
+
     return (
         <div className="home">
 
@@ -55,7 +64,7 @@ const Home = () => {
 
 
                 <div className="home-input-container">
-                    <div className="ride">
+                    <div className="ride" onClick={position}>
                         <div>
                             give a ride
                         </div>

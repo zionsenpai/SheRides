@@ -6,13 +6,15 @@ import "./App.css";
 import Home from "./components/home/Home";
 import {Routes, Route} from "react-router-dom"
 import Details from "./components/auth/Details";
+import GiveRides from "./components/home/GiveRide";
 export default function App(){
     return (
         <div className="main">
             <Routes>
-                <Route path="/auth" element={<Register></Register>}></Route>
+                {/* <Route path="/auth" element={<Register></Register>}></Route>
                 <Route path="/" element={<Home></Home>}></Route>
-                <Route path="/details" element={<Details></Details>}></Route>
+                <Route path="/details" element={<Details></Details>}></Route> */}
+                <Route path="/giveride" element={<GiveRides></GiveRides>}></Route>
             </Routes>
             {/* <Register></Register> */}
             {/* <Phone></Phone> */}
